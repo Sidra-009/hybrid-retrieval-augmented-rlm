@@ -9,5 +9,11 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install -r requirements.txt
+      
+      # Option 1: Sirf check karo (recommended - code quality enforce)
+      - run: black --check src/ tests/
+      
+      # Option 2: Auto-fix karo (agar aap chahti hain ke CI khud fix kare)
+      # - run: black src/ tests/
+      
       - run: pytest tests/
-      - run: black --check src/

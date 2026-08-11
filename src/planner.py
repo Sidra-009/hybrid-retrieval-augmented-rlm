@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
+
 class Planner:
     @staticmethod
     def generate_plan(user_query: str, context_length: int) -> dict:
@@ -26,21 +27,21 @@ class Planner:
         
         Output ONLY valid JSON. No markdown, no code fences.
         """
-        
+
         user_prompt = f"""
         User Query: {user_query}
         Total document size: {context_length} characters.
         Generate a JSON plan to answer this query accurately and cheaply.
         """
-        
+
         response = client.chat.completions.create(
             model="gpt-4o-mini",  # Sasta aur tez
             messages=[
                 {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt}
+                {"role": "user", "content": user_prompt},
             ],
-            response_format={"type": "json_object"}  # FORCED JSON!
+            response_format={"type": "json_object"},  # FORCED JSON!
         )
-        
+
         plan = json.loads(response.choices[0].message.content)
         return plan
