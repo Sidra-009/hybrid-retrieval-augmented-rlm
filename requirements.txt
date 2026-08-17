@@ -1,0 +1,12 @@
+openai
+numpy
+pydantic
+pydantic-settings
+python-dotenv
+tenacity
+rich
+pytest
+pytest-cov
+mypy
+ruff
+black
