@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  hra-rlm:
+    build: .
+    container_name: hra-rlm
+    environment:
+      - LLM_PROVIDER=${LLM_PROVIDER:-groq}
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - GROQ_MODEL=${GROQ_MODEL:-mixtral-8x7b-32768}
+      - EMBEDDING_PROVIDER=${EMBEDDING_PROVIDER:-sentence-transformers}
+      - MAX_RECURSION_DEPTH=${MAX_RECURSION_DEPTH:-3}
+      - TOP_K_CHUNKS=${TOP_K_CHUNKS:-5}
+      - ROT_THRESHOLD=${ROT_THRESHOLD:-0.4}
+    volumes:
+      - ./benchmarks/results:/app/benchmarks/results
+      - ./benchmarks/plots:/app/benchmarks/plots
+    command: python benchmarks/run_benchmark.py --all
+    stdin_open: true
+    tty: true
