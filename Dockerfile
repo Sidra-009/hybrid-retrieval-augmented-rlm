@@ -17,7 +17,7 @@ RUN pip install --no-cache-dir -e ".[benchmark]"
 # Copy source code
 COPY src/ ./src/
 COPY benchmarks/ ./benchmarks/
-COPY examples/ ./examples/
+# COPY examples/ ./examples/
 
 # Create results directory
 RUN mkdir -p benchmarks/results benchmarks/plots
