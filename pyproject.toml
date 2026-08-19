@@ -39,6 +39,10 @@ dev = [
 metaflow = [
     "metaflow>=2.10.0",
 ]
+benchmark = [
+    "matplotlib>=3.7.0",
+    "pandas>=2.0.0",
+]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/hra_rlm"]

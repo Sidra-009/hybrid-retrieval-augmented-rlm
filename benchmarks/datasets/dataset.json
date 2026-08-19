@@ -1,0 +1,92 @@
+[
+  {
+    "doc_id": "doc1",
+    "text": "The theory of relativity is a scientific theory developed by Albert Einstein. It consists of two parts:\nspecial relativity and general relativity. Special relativity applies to all physical phenomena in the absence of gravity.\nGeneral relativity explains the law of gravitation and its relation to other forces of nature. The theory has been confirmed\nby many experiments and observations, including the bending of light by the sun, the precession of Mercury's orbit,\nand the gravitational redshift of light.",
+    "qa_pairs": [
+      {
+        "question": "Who developed the theory of relativity?",
+        "answer": "Albert Einstein"
+      },
+      {
+        "question": "What are the two parts of the theory of relativity?",
+        "answer": "special relativity and general relativity"
+      },
+      {
+        "question": "What phenomenon confirms general relativity?",
+        "answer": "bending of light by the sun"
+      }
+    ]
+  },
+  {
+    "doc_id": "doc2",
+    "text": "Photosynthesis is the process used by plants, algae, and certain bacteria to convert light energy into\nchemical energy. It occurs in chloroplasts, which contain the pigment chlorophyll. The overall reaction is:\n6CO2 + 6H2O -> C6H12O6 + 6O2. This process is essential for life on Earth as it produces oxygen and carbohydrates.\nThere are two stages: light-dependent reactions and the Calvin cycle. The light-dependent reactions occur in the thylakoid\nmembranes, while the Calvin cycle occurs in the stroma.",
+    "qa_pairs": [
+      {
+        "question": "What is the process by which plants convert light energy into chemical energy?",
+        "answer": "photosynthesis"
+      },
+      {
+        "question": "Where does photosynthesis occur in plants?",
+        "answer": "chloroplasts"
+      },
+      {
+        "question": "What is the overall reaction of photosynthesis?",
+        "answer": "6CO2 + 6H2O -> C6H12O6 + 6O2"
+      }
+    ]
+  },
+  {
+    "doc_id": "doc3",
+    "text": "The Renaissance was a period in European history marking the transition from the Middle Ages to modernity.\nIt began in Italy in the 14th century and spread to the rest of Europe by the 16th century. The Renaissance was characterized\nby a revival of interest in classical art, literature, and learning. Key figures include Leonardo da Vinci, Michelangelo,\nand Raphael. The invention of the printing press by Johannes Gutenberg around 1440 greatly facilitated the spread of\nRenaissance ideas.",
+    "qa_pairs": [
+      {
+        "question": "When did the Renaissance begin?",
+        "answer": "14th century"
+      },
+      {
+        "question": "Where did the Renaissance begin?",
+        "answer": "Italy"
+      },
+      {
+        "question": "Who is a key figure of the Renaissance?",
+        "answer": "Leonardo da Vinci"
+      }
+    ]
+  },
+  {
+    "doc_id": "doc4",
+    "text": "The human genome is the complete set of nucleic acid sequences for humans, encoded as DNA within the\n23 chromosome pairs in cell nuclei. The Human Genome Project, completed in 2003, determined the sequence of the\n3 billion base pairs. Genes are segments of DNA that code for proteins. The genome contains approximately 20,000-25,000\nprotein-coding genes. Genetic variation, such as single nucleotide polymorphisms (SNPs), contributes to individual differences\nand disease susceptibility.",
+    "qa_pairs": [
+      {
+        "question": "How many base pairs does the human genome contain?",
+        "answer": "3 billion"
+      },
+      {
+        "question": "When was the Human Genome Project completed?",
+        "answer": "2003"
+      },
+      {
+        "question": "What are SNPs?",
+        "answer": "single nucleotide polymorphisms"
+      }
+    ]
+  },
+  {
+    "doc_id": "doc5",
+    "text": "The Great Wall of China is a series of fortifications built along the northern borders of China to protect\nagainst invasions. The most famous sections were built during the Ming dynasty (1368-1644). The wall stretches over\n13,000 miles, including branches. It is made of stone, brick, tamped earth, wood, and other materials. Contrary to\npopular belief, the wall is not a single continuous line but consists of many segments. It is one of the world's most\nimpressive architectural feats.",
+    "qa_pairs": [
+      {
+        "question": "What is the approximate length of the Great Wall of China?",
+        "answer": "13,000 miles"
+      },
+      {
+        "question": "Which dynasty built the most famous sections?",
+        "answer": "Ming dynasty"
+      },
+      {
+        "question": "Is the Great Wall a single continuous line?",
+        "answer": "No, it consists of many segments."
+      }
+    ]
+  }
+]
