@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install ruff
+
+      - name: Lint with ruff
+        run: ruff check src/ benchmarks/ --exit-zero
+
+      - name: Check imports don't break
+        run: |
+          python -c "from src.hra_rlm.llm_client import LLMClient; print('llm_client OK')"
+          python -c "from src.hra_rlm import AutoHealer; print('AutoHealer OK')"
+
+      # Uncomment once you add tests/
+      # - name: Run tests
+      #   run: pytest tests/ -v
+
+  secret-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Scan for accidentally committed secrets
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
