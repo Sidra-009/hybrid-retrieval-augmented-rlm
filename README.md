@@ -385,8 +385,3 @@ Models: A Survey." arXiv:2312.10997, 2024.
 > the authors of this README. Confirm the reference resolves correctly
 > before including it in any formal submission.
 
----
-
-## License
-
-[MIT](LICENSE)
