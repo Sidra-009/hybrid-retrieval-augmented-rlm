@@ -1,0 +1,48 @@
+name: Weekly Benchmark Run
+
+# Runs the benchmark suite in mock mode on a schedule and commits refreshed
+# results. Because this workflow commits using the built-in GITHUB_TOKEN as
+# "github-actions[bot]", that bot will appear in the repo's Contributors
+# list after its first successful commit.
+#
+# NOTE: this workflow uses --use-mock by default so it never needs a real
+# GROQ_API_KEY secret and never touches Groq's rate limits. To run REAL
+# benchmarks on a schedule instead, add GROQ_API_KEY as a repository secret
+# (Settings -> Secrets and variables -> Actions) and swap --use-mock for
+# --real below -- but be mindful of Groq's free-tier daily token cap.
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"   # every Monday at 06:00 UTC
+  workflow_dispatch: {}    # allows manually triggering from the Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  run-benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run benchmark (mock mode)
+        run: |
+          python benchmarks/run_benchmark.py --all --use-mock --trials 1
+
+      - name: Commit updated results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add benchmarks/results/
+          git diff --staged --quiet || git commit -m "chore: weekly automated benchmark refresh"
+          git push
