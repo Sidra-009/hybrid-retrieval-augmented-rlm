@@ -32,7 +32,6 @@ diagnose.py
 test_groq.py
 
 # --- Benchmark run artifacts (regenerate via run_benchmark.py, don't commit stale results) ---
-benchmarks/results/*.json
 
 # --- HuggingFace / sentence-transformers local cache, if it ever lands in-project ---
 .cache/
