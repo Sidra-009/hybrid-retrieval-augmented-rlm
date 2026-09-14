@@ -1,0 +1,6 @@
+﻿numpy
+hnswlib
+sentence-transformers
+python-dotenv
+groq
+matplotlib
