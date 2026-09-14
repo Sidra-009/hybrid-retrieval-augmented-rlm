@@ -1,51 +1,99 @@
-# Benchmarks
+# Benchmarking
 
-This document describes the benchmark setup and results for HRA-RLM.
+This document explains how the benchmark suite is run, what it measures, and
+— importantly — which results are valid to cite and why. See
+[`RESULTS.md`](./RESULTS.md) for the actual numbers and
+[`METHODOLOGY.md`](./METHODOLOGY.md) for the architecture being measured.
 
-## Methodology
+## 1. Dataset
 
-We compare four configurations:
-- **Baseline RLM**: Original recursive reasoning without retrieval gating.
-- **Hybrid (fixed_k)**: Retrieval gating with fixed number of chunks.
-- **Hybrid + AutoHealer**: Adds automatic strategy switching on context rot detection.
-- **Hybrid + Parallel**: Uses Metaflow for parallel sub-call execution.
+27 question/answer pairs spanning the full source document, used identically
+across all four methods (see `benchmarks/datasets/`). An earlier 10-question
+pilot dataset (scoped to a ~300-word excerpt) was used during early
+development and is superseded by this 27-question set — it should not be
+cited going forward.
 
-### Dataset
+## 2. Methods under test
 
-We use a small dataset of 5 public-domain documents (each ~150-200 words) with 3 question-answer pairs per document. Questions are factual-lookup and multi-hop, similar to the S-NIAH and OOLONG tasks from the MIT RLM paper.
+See [`METHODOLOGY.md`](./METHODOLOGY.md#5-methods-compared) for what each of
+the four methods does. All four are run over the same 27 questions in every
+trial.
 
-### Metric Definitions
+## 3. Metrics reported
 
-- **Accuracy**: Exact or fuzzy match between predicted answer and ground truth (case-insensitive substring).
-- **Cost**: Simulated cost based on token usage (mock LLM charges $0.001 per 100 tokens).
-- **Latency**: End-to-end wall-clock time in milliseconds.
-- **Tokens**: Total number of tokens consumed.
+| Metric | Meaning |
+|---|---|
+| Accuracy (embedding) | Semantic similarity between model answer and reference answer |
+| Accuracy (keyword) | Keyword/token overlap between model answer and reference answer |
+| Estimated cost | Per-query cost computed from published reference pricing (see `METHODOLOGY.md`) |
+| Tokens | Total tokens consumed per query (prompt + completion) |
+| p50 latency | Median per-query response time |
+| Batch wall-clock | Total time to answer all 27 questions for that method — the metric that reflects real parallel speedup |
+| Mock-fallback count | Number of queries in that method's row that fell back to simulated output due to a real-API error (rate limit, timeout, etc.) |
 
-### Limitations
+**Both accuracy metrics are always reported together, never just one.** Early
+runs showed them disagreeing in direction (one metric improving while the
+other dropped for the same method) — see `RESULTS.md`. Reporting only the
+favorable one would be cherry-picking.
 
-- Small dataset (5 documents, 15 Q/A pairs) — not statistically significant.
-- Accuracy judged by simple substring match, not semantic similarity.
-- Mock LLM used for reproducibility; real LLM costs would differ.
-- Results are illustrative; do not reflect production-grade performance.
+## 4. Running it yourself
 
-## Results
+```bash
+# Cheap smoke test — no API calls, verifies the pipeline runs end-to-end
+python benchmarks/run_benchmark.py --all --use-mock --num-questions 3
 
-<!-- Replace with actual numbers after running the benchmark. -->
+# Full real run, single trial
+python benchmarks/run_benchmark.py --all --real
 
-| Method                | Accuracy % | Avg Cost ($) | Avg Tokens | P50 Latency (ms) | P95 Latency (ms) |
-|-----------------------|------------|--------------|------------|------------------|------------------|
-| Baseline RLM          | 80%        | 0.010        | 500        | 1200             | 2500             |
-| Hybrid (fixed_k)      | 75%        | 0.002        | 150        | 400              | 800              |
-| Hybrid + AutoHealer   | 78%        | 0.003        | 200        | 600              | 1200             |
-| Hybrid + Parallel     | 76%        | 0.002        | 150        | 350              | 700              |
+# Full real run, multiple trials (mean + [min-max] range per method)
+python benchmarks/run_benchmark.py --all --real --trials 2
 
-**Interpretation**: Hybrid retrieval gating reduces cost by ~5x and latency by ~3x while maintaining comparable accuracy. AutoHealer slightly improves accuracy at the cost of increased latency. Parallelization further reduces latency.
+# Optimization sweep example
+python benchmarks/run_benchmark.py --all --real --trials 2 \
+    --top-k 5 --embedding-model BAAI/bge-small-en-v1.5
+```
 
-## Running the Benchmarks
+Results are written to `benchmarks/results/*.json` (gitignored — regenerate
+locally rather than relying on committed snapshots, except for the automated
+weekly mock-mode refresh described below).
 
-To reproduce these results:
+## 5. Rate limits and what "real" actually requires
 
-1. Ensure dependencies are installed: `pip install -e .[dev]`
-2. Build the dataset: `python benchmarks/datasets/build_dataset.py`
-3. Run all benchmarks: `python benchmarks/run_benchmark.py --all`
-4. Generate plots: `python benchmarks/run_benchmark.py --plots`
+The benchmark runs against Groq's free tier, which enforces two independent
+caps:
+
+- **8,000 tokens/minute** — handled automatically by an internal pacer that
+  enforces a minimum delay between real API calls.
+- **200,000 tokens/day** — a hard daily budget. A single full 27-question × 4-
+  method run consumes a large fraction of this on its own. This is a *daily*
+  cap, not something the pacer can work around; the only options when it is
+  hit are to wait for the daily reset or upgrade to a paid tier.
+
+**Do not attempt to bypass the daily cap with a second account or key** — this
+would violate Groq's terms of service and is out of scope for this project
+regardless of the deadline pressure.
+
+## 6. Data validity policy
+
+**A trial is only valid and citable if it has zero mock-fallback queries
+across all four methods.** When a real API call fails (typically a 429 rate
+limit), the runner falls back to a simulated answer so the run doesn't crash
+— but that row's accuracy/cost numbers are then partially synthetic, not
+measured. The runner always prints and saves the mock-fallback count per
+method precisely so this can never be silently missed.
+
+This project has logged one fully valid real trial (**Trial 1**, zero mock
+fallback across all 108 queries) and two/three follow-up attempts that hit
+the daily token cap partway through and are **excluded from all reported
+results** as a result. See [`RESULTS.md`](./RESULTS.md#invalid-trial-attempts)
+for the specifics — they're documented rather than deleted, for transparency
+about what was tried and why it didn't produce usable data.
+
+## 7. Automated weekly run (CI)
+
+`.github/workflows/benchmark-bot.yml` runs the suite in **mock mode** every
+Monday (plus manual trigger), and commits refreshed `benchmarks/results/`
+JSON as `github-actions[bot]`. This is intentionally mock-only — it exists to
+keep the results artifacts fresh and CI green, not to produce citable
+numbers. Mock-mode output must never be presented as, or mixed into, the real
+trial data in `RESULTS.md`.

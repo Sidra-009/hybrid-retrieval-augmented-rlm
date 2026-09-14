@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this software or its results, please cite it as below."
+title: "HRA-RLM: Hybrid Retrieval-Augmented Recursive Language Model"
+authors:
+  - name: "Sidra"
+    alias: "Sidra-009"
+repository-code: "https://github.com/Sidra-009/hybrid-retrieval-augmented-rlm"
+abstract: >
+  A retrieval-gated architecture that reduces token usage, inference cost,
+  and latency of recursive LLM reasoning over long documents by selectively
+  retrieving semantically relevant passages via HNSW before triggering
+  recursion, benchmarked against a baseline recursive LM.
+keywords:
+  - retrieval-augmented generation
+  - recursive language models
+  - HNSW
+  - long-context reasoning
+  - cost-efficient inference
+license: MIT
+date-released: 2026-09-14
