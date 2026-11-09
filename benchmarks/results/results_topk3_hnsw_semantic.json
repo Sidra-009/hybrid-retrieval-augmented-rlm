@@ -4,55 +4,55 @@
   "top_k": 3,
   "num_questions": 27,
   "embedding_match_threshold": 0.55,
-  "timestamp": 1793630365.1505752,
+  "timestamp": 1794236470.7860467,
   "results": [
     {
       "method": "Baseline RLM",
-      "accuracy": 66.66666666666666,
-      "accuracy_keyword": 66.66666666666666,
-      "avg_cost": 0.0020530360164961554,
-      "p50_latency": 8.061438099031225,
-      "avg_tokens": 203,
-      "total_queries": 27,
-      "correct_answers": 18,
-      "mock_fallback_count": 0,
-      "batch_wall_clock_s": 0.00011822199999755867
-    },
-    {
-      "method": "Hybrid (fixed_k)",
       "accuracy": 81.48148148148148,
       "accuracy_keyword": 81.48148148148148,
-      "avg_cost": 0.00196770666197797,
-      "p50_latency": 11.238889201959243,
+      "avg_cost": 0.0020153597088466368,
+      "p50_latency": 11.048304624138026,
       "avg_tokens": 204,
       "total_queries": 27,
       "correct_answers": 22,
       "mock_fallback_count": 0,
-      "batch_wall_clock_s": 12.91444413100001
+      "batch_wall_clock_s": 9.778700001561447e-05
+    },
+    {
+      "method": "Hybrid (fixed_k)",
+      "accuracy": 66.66666666666666,
+      "accuracy_keyword": 66.66666666666666,
+      "avg_cost": 0.001915683443816815,
+      "p50_latency": 9.239979469303467,
+      "avg_tokens": 208,
+      "total_queries": 27,
+      "correct_answers": 18,
+      "mock_fallback_count": 0,
+      "batch_wall_clock_s": 11.271884830000005
     },
     {
       "method": "Hybrid + AutoHealer",
-      "accuracy": 74.07407407407408,
-      "accuracy_keyword": 74.07407407407408,
-      "avg_cost": 0.002015853702564932,
-      "p50_latency": 9.399872042425717,
-      "avg_tokens": 201,
+      "accuracy": 70.37037037037037,
+      "accuracy_keyword": 70.37037037037037,
+      "avg_cost": 0.0020332454574665333,
+      "p50_latency": 8.800756405853484,
+      "avg_tokens": 219,
       "total_queries": 27,
-      "correct_answers": 20,
+      "correct_answers": 19,
       "mock_fallback_count": 0,
-      "batch_wall_clock_s": 12.995571992999999
+      "batch_wall_clock_s": 11.282203664999997
     },
     {
       "method": "Hybrid + Parallel",
-      "accuracy": 62.96296296296296,
-      "accuracy_keyword": 62.96296296296296,
-      "avg_cost": 0.0019630983240297396,
-      "p50_latency": 11.658119626048236,
-      "avg_tokens": 182,
+      "accuracy": 81.48148148148148,
+      "accuracy_keyword": 81.48148148148148,
+      "avg_cost": 0.0020814454755004974,
+      "p50_latency": 8.405483759990974,
+      "avg_tokens": 204,
       "total_queries": 27,
-      "correct_answers": 17,
+      "correct_answers": 22,
       "mock_fallback_count": 0,
-      "batch_wall_clock_s": 20.077854529999996
+      "batch_wall_clock_s": 19.073579983000002
     }
   ]
 }
